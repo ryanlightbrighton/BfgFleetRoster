@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BfgFleetRoster", "BfgFleetRoster\BfgFleetRoster.csproj", "{D75EA6AD-5A4B-46A0-AF88-18D0C38B7F89}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D75EA6AD-5A4B-46A0-AF88-18D0C38B7F89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D75EA6AD-5A4B-46A0-AF88-18D0C38B7F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D75EA6AD-5A4B-46A0-AF88-18D0C38B7F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D75EA6AD-5A4B-46A0-AF88-18D0C38B7F89}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D6A99C4-B04B-454C-A45A-83D176049A7F}
+	EndGlobalSection
+EndGlobal
