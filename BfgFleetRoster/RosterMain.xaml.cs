@@ -153,6 +153,13 @@ namespace BfgFleetRoster
         // class for squadrons
 
 
+        public class BfgSquadron
+        {
+            public int SquadronID { get; private set; }
+            public string SquadronName { get; private set; }
+            private List<BfgShip> Ships { get; set; }
+        }
+
 
 
 
@@ -231,8 +238,6 @@ namespace BfgFleetRoster
             LB_ShipTypes.ItemsSource = ships;
             LB_ShipTypes.DataContext = ships;
             LB_ShipTypes.DisplayMemberPath = "DisplayName";
-
-            //LB_ShipTypes.ToolTip = $"xxxx{Environment.NewLine}yyyyyy{Environment.NewLine}zzzzzzzzz";
         }
 
         private List<BfgShip>RosterShips = new List<BfgShip>();
@@ -249,6 +254,29 @@ namespace BfgFleetRoster
             LB_Roster.ItemsSource = RosterShips;
             LB_Roster.DisplayMemberPath = "DisplayName";
             LB_Roster.Items.Refresh();
+
+            // code for treeview
+
+            // add new squadron
+
+            TreeViewItem squadron = new TreeViewItem();
+            squadron.Header = "Squadron";
+
+            // add ship to squadron
+
+            TreeViewItem ship = new TreeViewItem();
+            ship.Header = selectedShip.DisplayName;
+            ship.Tag = selectedShip;
+
+            squadron.Items.Add(ship);
+
+            TV_Roster.Items.Add(squadron);
+
+            TV_Roster.UpdateLayout();
+
+            BfgShip x = (BfgShip)ship.Tag;
+
+            MessageBox.Show($"{x.DisplayName} | {x.SpeedBase} | {x.ShieldsBase} | {x.HitsBase}");
         }
 
         private void BTN_RemoveShips_Click(object sender, RoutedEventArgs e)
@@ -266,5 +294,83 @@ namespace BfgFleetRoster
             LB_Roster.Items.Refresh();
 
         }
+
+
+        private void LB_ShipTypes_MouseMove(object sender, MouseEventArgs e)
+        {
+            var dragSource = LB_ShipTypes;
+            var data = LB_ShipTypes.SelectedItem;
+            if (data != null && e.LeftButton == MouseButtonState.Pressed)
+            {
+                var dataObj = new DataObject(data);
+                dataObj.SetData("DragSource", dragSource);
+                dataObj.SetData("DragShip", data);
+                DragDrop.DoDragDrop(dragSource, dataObj, DragDropEffects.Copy); // try data, not dataObj
+                BfgShip x = (BfgShip)data;
+                //MessageBox.Show(x.PointsCostBase.ToString());
+            }
+                
+        }
+
+        private void TV_Roster_Drop(object sender, DragEventArgs e)
+        {
+            BfgShip dropped = (BfgShip)e.Data.GetData("DragShip");
+            MessageBox.Show($"{dropped.DisplayName}");
+
+
+            int.TryParse(TB_Points.Text, out int num);
+            num += dropped.PointsCostBase;
+            TB_Points.Text = num.ToString();
+            RosterShips.Add(dropped);
+            LB_Roster.ItemsSource = RosterShips;
+            LB_Roster.DisplayMemberPath = "DisplayName";
+            LB_Roster.Items.Refresh();
+
+            // code for treeview
+
+            // add new squadron
+
+            TreeViewItem squadron = new TreeViewItem
+            {
+                Header = "Squadron"
+            };
+
+            // add ship to squadron
+
+            TreeViewItem ship = new TreeViewItem();
+            ship.Header = dropped.DisplayName;
+            ship.Tag = dropped;
+
+            squadron.Items.Add(ship);
+
+            TV_Roster.Items.Add(squadron);
+
+            TV_Roster.UpdateLayout();
+
+            BfgShip x = (BfgShip)ship.Tag;
+
+            MessageBox.Show($"{x.DisplayName} | {x.SpeedBase} | {x.ShieldsBase} | {x.HitsBase}");
+
+        }
+
+        /*
+         * https://wpf.2000things.com/tag/dodragdrop/
+         * 
+        private void Label_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DataObject data = new DataObject(DataFormats.Text, ((Label)e.Source).Content);
+ 
+            DragDrop.DoDragDrop((DependencyObject)e.Source, data, DragDropEffects.Copy);
+ 
+            // Not called until drag-and-drop is done
+            ((Label)e.Source).Content = "DragDrop done";
+        }
+ 
+        private void Label_Drop(object sender, DragEventArgs e)
+        {
+            ((Label)e.Source).Content = (string)e.Data.GetData(DataFormats.Text);
+        } 
+         
+        */
     }
 }
