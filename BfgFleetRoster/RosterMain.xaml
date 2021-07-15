@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:BfgFleetRoster"
         mc:Ignorable="d"
         Title="RosterMain" Height="450" Width="800">
-    <Grid x:Name="RM_Grid">
+    <Grid x:Name="RM_Grid" Drop="RM_Grid_Drop">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="419*"/>
             <ColumnDefinition Width="373*"/>
         </Grid.ColumnDefinitions>
         <Button x:Name="BTN_AddShip" Content="Add Ship As &#xD;&#xA;New Squadron" HorizontalAlignment="Left" Margin="216,70,0,0" VerticalAlignment="Top" Width="136" Height="45" Click="BTN_AddShip_Click"/>
         <ComboBox x:Name="CB_ParentSelector" HorizontalAlignment="Left" VerticalAlignment="Top" Width="175" Margin="22,33,0,0"/>
-        <Button x:Name="BTN_RemoveShips" Content="Remove Selected Ships" HorizontalAlignment="Left" Margin="374,70,0,0" VerticalAlignment="Top" Width="136" Height="45" Click="BTN_RemoveShips_Click" Grid.ColumnSpan="2"/>
+        <Button x:Name="BTN_RemoveShips" Content="Remove Selected Ships" HorizontalAlignment="Left" Margin="374,70,0,0" VerticalAlignment="Top" Width="136" Height="45" Grid.ColumnSpan="2"/>
         <Button x:Name="BTN_ClearRoster" Content="Clear Current Roster" HorizontalAlignment="Left" Margin="374,319,0,0" VerticalAlignment="Top" Width="136" Height="45" RenderTransformOrigin="0.484,1.197" Grid.ColumnSpan="2"/>
         <Label x:Name="LBL_RosterName" Content="Roster Name" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101.695,10,0,0" Height="28" Width="89" RenderTransformOrigin="1.035,0.52" Grid.Column="1"/>
         <TextBox x:Name="TB_RosterName" HorizontalAlignment="Left" Height="23" Margin="195.695,15,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" RenderTransformOrigin="0.487,-0.396" Grid.Column="1"/>
@@ -25,8 +25,7 @@
         <ListBox x:Name="LB_ShipTypes" HorizontalAlignment="Left" Height="243" Margin="22,121,0,0" VerticalAlignment="Top" Width="175" MouseMove="LB_ShipTypes_MouseMove"/>
         <Label x:Name="LBL_Points" Content="Points" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="101.695,38,0,0" Height="28" Width="89" RenderTransformOrigin="1.035,0.52" Grid.Column="1"/>
         <TextBox x:Name="TB_Points" HorizontalAlignment="Left" Height="23" Margin="195.695,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" RenderTransformOrigin="0.487,-0.396" IsReadOnly="True" Text="0" Grid.Column="1"/>
-        <ListBox x:Name="LB_Roster" HorizontalAlignment="Left" Height="144" Margin="113,265,0,0" VerticalAlignment="Top" Width="250" Grid.Column="1"/>
-        <TreeView x:Name="TV_Roster" Grid.Column="1" HorizontalAlignment="Left" Height="189" Margin="113,71,0,0" VerticalAlignment="Top" Width="250" AllowDrop="True" Drop="TV_Roster_Drop"/>
+        <TreeView x:Name="TV_Roster" Grid.Column="1" HorizontalAlignment="Left" Height="338" Margin="113,71,0,0" VerticalAlignment="Top" Width="250" AllowDrop="True" Drop="TV_Roster_Drop"/>
 
     </Grid>
 </Window>

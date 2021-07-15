@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +22,26 @@ namespace BfgFleetRoster
     /// </summary>
     public partial class RosterMain : Window
     {
+
+        public class MouseUtilities
+        {
+            [StructLayout(LayoutKind.Sequential)]
+            private struct Win32Point
+            {
+                public Int32 X;
+                public Int32 Y;
+            };
+            [DllImport("user32.dll")]
+            private static extern bool GetCursorPos(ref Win32Point pt);
+            [DllImport("user32.dll")]
+            private static extern bool ScreenToClient(IntPtr hwnd, ref Win32Point pt);
+            public static Point GetMousePosition(Visual relativeTo)
+            {
+                Win32Point mouse = new Win32Point();
+                GetCursorPos(ref mouse);
+                return relativeTo.PointFromScreen(new Point((double)mouse.X, (double)mouse.Y));
+            }
+        }
         // classes to represent the various navies
 
         private class BfgFaction
@@ -251,9 +272,6 @@ namespace BfgFleetRoster
             num += selectedShip.PointsCostBase;
             TB_Points.Text = num.ToString();
             RosterShips.Add(selectedShip);
-            LB_Roster.ItemsSource = RosterShips;
-            LB_Roster.DisplayMemberPath = "DisplayName";
-            LB_Roster.Items.Refresh();
 
             // code for treeview
 
@@ -279,7 +297,7 @@ namespace BfgFleetRoster
             MessageBox.Show($"{x.DisplayName} | {x.SpeedBase} | {x.ShieldsBase} | {x.HitsBase}");
         }
 
-        private void BTN_RemoveShips_Click(object sender, RoutedEventArgs e)
+        /*private void BTN_RemoveShips_Click(object sender, RoutedEventArgs e)
         {
             //List<BfgShip> removeShips = new List<BfgShip>();
             int.TryParse(TB_Points.Text, out int num);
@@ -293,7 +311,7 @@ namespace BfgFleetRoster
             TB_Points.Text = num.ToString();
             LB_Roster.Items.Refresh();
 
-        }
+        }*/
 
 
         private void LB_ShipTypes_MouseMove(object sender, MouseEventArgs e)
@@ -312,21 +330,22 @@ namespace BfgFleetRoster
                 
         }
 
+        // https://www.c-sharpcorner.com/blogs/perform-drag-and-drop-operation-on-treeview-node-in-c-sharp-net
+
         private void TV_Roster_Drop(object sender, DragEventArgs e)
         {
             BfgShip dropped = (BfgShip)e.Data.GetData("DragShip");
-            MessageBox.Show($"{dropped.DisplayName}");
+            //MessageBox.Show($"{dropped.DisplayName}");
 
 
             int.TryParse(TB_Points.Text, out int num);
             num += dropped.PointsCostBase;
             TB_Points.Text = num.ToString();
             RosterShips.Add(dropped);
-            LB_Roster.ItemsSource = RosterShips;
-            LB_Roster.DisplayMemberPath = "DisplayName";
-            LB_Roster.Items.Refresh();
 
             // code for treeview
+
+            
 
             // add new squadron
 
@@ -334,6 +353,26 @@ namespace BfgFleetRoster
             {
                 Header = "Squadron"
             };
+
+            // https://stackoverflow.com/questions/1429972/dragging-and-dropping-to-a-treeview-finding-the-index-where-to-insert-the-dropp
+
+            // https://www.codeproject.com/Articles/55168/Drag-and-Drop-Feature-in-WPF-TreeView-Control
+
+            try
+            {
+                //IInputElement i = (IInputElement)TV_Roster.Items[0];
+                Point tp = TV_Roster.PointFromScreen(MouseUtilities.GetMousePosition(TV_Roster));
+                IInputElement i = TV_Roster.InputHitTest(tp);
+                if (i != null)
+                {
+                    MessageBox.Show(i.ToString());
+                }
+                else
+                    MessageBox.Show("null");
+            }
+            catch { 
+            
+            }
 
             // add ship to squadron
 
@@ -347,9 +386,21 @@ namespace BfgFleetRoster
 
             TV_Roster.UpdateLayout();
 
+
+            // loop through & expand
+
+            foreach (TreeViewItem t in TV_Roster.Items) {
+                t.IsExpanded = true;
+            }
+
             BfgShip x = (BfgShip)ship.Tag;
 
             MessageBox.Show($"{x.DisplayName} | {x.SpeedBase} | {x.ShieldsBase} | {x.HitsBase}");
+
+        }
+
+        private void RM_Grid_Drop(object sender, DragEventArgs e)
+        {
 
         }
 
